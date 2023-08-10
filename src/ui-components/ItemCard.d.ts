@@ -5,7 +5,6 @@
  **************************************************************************/
 
 import * as React from "react";
-import { Todo } from "../models";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 import { ButtonProps, FlexProps, SwitchFieldProps, TextProps } from "@aws-amplify/ui-react";
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
@@ -19,8 +18,6 @@ export declare type ItemCardOverridesProps = {
     DeleteButton?: PrimitiveOverrideProps<ButtonProps>;
 } & EscapeHatchProps;
 export declare type ItemCardProps = React.PropsWithChildren<Partial<FlexProps> & {
-    todo?: Todo;
-} & {
     overrides?: ItemCardOverridesProps | undefined | null;
 }>;
 export default function ItemCard(props: ItemCardProps): React.ReactElement;

@@ -4,5 +4,4 @@ type Todo @model @auth(rules: [{allow: owner}]) {
   description: String
   completed: Boolean
   image: String
-}
- 
+} 

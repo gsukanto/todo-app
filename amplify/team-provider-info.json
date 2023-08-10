@@ -28,5 +28,32 @@
         "s3todoimages": {}
       }
     }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-todoapp-dev-163051-authRole",
+      "UnauthRoleArn": "arn:aws:iam::326071212903:role/amplify-todoapp-dev-163051-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::326071212903:role/amplify-todoapp-dev-163051-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-todoapp-dev-163051-deployment",
+      "UnauthRoleName": "amplify-todoapp-dev-163051-unauthRole",
+      "StackName": "amplify-todoapp-dev-163051",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:326071212903:stack/amplify-todoapp-dev-163051/445a2e80-35ce-11ee-9b84-06b927bd867c",
+      "AmplifyAppId": "d2eho3dhp1r5z9"
+    },
+    "categories": {
+      "auth": {
+        "todoapp": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d2eho3dhp1r5z9",
+          "type": "cicd"
+        }
+      },
+      "storage": {
+        "s3todoimages": {}
+      }
+    }
   }
 }

@@ -6,14 +6,10 @@
 
 /* eslint-disable */
 import * as React from "react";
-import {
-  getOverrideProps,
-  useNavigateAction,
-} from "@aws-amplify/ui-react/internal";
+import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Button, Flex, Heading, View } from "@aws-amplify/ui-react";
 export default function DetailNavBar(props) {
   const { overrides, ...rest } = props;
-  const buttonOnClick = useNavigateAction({ type: "url", url: "/" });
   return (
     <Flex
       gap="20px"
@@ -57,20 +53,21 @@ export default function DetailNavBar(props) {
           {...getOverrideProps(overrides, "Frame 1")}
         ></View>
         <Heading
+          width="unset"
+          height="unset"
           shrink="0"
           level="4"
           children="Edit Item"
           {...getOverrideProps(overrides, "Heading")}
         ></Heading>
         <Button
+          width="unset"
+          height="unset"
           shrink="0"
           size="large"
           isDisabled={false}
           variation="link"
           children="✕"
-          onClick={() => {
-            buttonOnClick();
-          }}
           {...getOverrideProps(overrides, "Button")}
         ></Button>
       </Flex>

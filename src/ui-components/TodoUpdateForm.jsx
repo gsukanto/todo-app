@@ -11,7 +11,6 @@ import {
   Flex,
   Grid,
   SwitchField,
-  TextAreaField,
   TextField,
 } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
@@ -21,7 +20,7 @@ import { DataStore } from "aws-amplify";
 export default function TodoUpdateForm(props) {
   const {
     id: idProp,
-    todo,
+    todo: todoModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -34,12 +33,14 @@ export default function TodoUpdateForm(props) {
     name: "",
     description: "",
     completed: false,
+    image: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [description, setDescription] = React.useState(
     initialValues.description
   );
   const [completed, setCompleted] = React.useState(initialValues.completed);
+  const [image, setImage] = React.useState(initialValues.image);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = todoRecord
@@ -48,30 +49,35 @@ export default function TodoUpdateForm(props) {
     setName(cleanValues.name);
     setDescription(cleanValues.description);
     setCompleted(cleanValues.completed);
+    setImage(cleanValues.image);
     setErrors({});
   };
-  const [todoRecord, setTodoRecord] = React.useState(todo);
+  const [todoRecord, setTodoRecord] = React.useState(todoModelProp);
   React.useEffect(() => {
     const queryData = async () => {
-      const record = idProp ? await DataStore.query(Todo, idProp) : todo;
+      const record = idProp
+        ? await DataStore.query(Todo, idProp)
+        : todoModelProp;
       setTodoRecord(record);
     };
     queryData();
-  }, [idProp, todo]);
+  }, [idProp, todoModelProp]);
   React.useEffect(resetStateValues, [todoRecord]);
   const validations = {
     name: [{ type: "Required" }],
     description: [],
     completed: [],
+    image: [],
   };
   const runValidationTasks = async (
     fieldName,
     currentValue,
     getDisplayValue
   ) => {
-    const value = getDisplayValue
-      ? getDisplayValue(currentValue)
-      : currentValue;
+    const value =
+      currentValue && getDisplayValue
+        ? getDisplayValue(currentValue)
+        : currentValue;
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -92,6 +98,7 @@ export default function TodoUpdateForm(props) {
           name,
           description,
           completed,
+          image,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -150,6 +157,7 @@ export default function TodoUpdateForm(props) {
               name: value,
               description,
               completed,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -164,7 +172,7 @@ export default function TodoUpdateForm(props) {
         hasError={errors.name?.hasError}
         {...getOverrideProps(overrides, "name")}
       ></TextField>
-      <TextAreaField
+      <TextField
         label="Description"
         isRequired={false}
         isReadOnly={false}
@@ -176,6 +184,7 @@ export default function TodoUpdateForm(props) {
               name,
               description: value,
               completed,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -189,7 +198,7 @@ export default function TodoUpdateForm(props) {
         errorMessage={errors.description?.errorMessage}
         hasError={errors.description?.hasError}
         {...getOverrideProps(overrides, "description")}
-      ></TextAreaField>
+      ></TextField>
       <SwitchField
         label="Completed"
         defaultChecked={false}
@@ -202,6 +211,7 @@ export default function TodoUpdateForm(props) {
               name,
               description,
               completed: value,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.completed ?? value;
@@ -216,6 +226,33 @@ export default function TodoUpdateForm(props) {
         hasError={errors.completed?.hasError}
         {...getOverrideProps(overrides, "completed")}
       ></SwitchField>
+      <TextField
+        label="Image"
+        isRequired={false}
+        isReadOnly={false}
+        value={image}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              description,
+              completed,
+              image: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.image ?? value;
+          }
+          if (errors.image?.hasError) {
+            runValidationTasks("image", value);
+          }
+          setImage(value);
+        }}
+        onBlur={() => runValidationTasks("image", image)}
+        errorMessage={errors.image?.errorMessage}
+        hasError={errors.image?.hasError}
+        {...getOverrideProps(overrides, "image")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
@@ -227,7 +264,7 @@ export default function TodoUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || todo)}
+          isDisabled={!(idProp || todoModelProp)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -235,11 +272,11 @@ export default function TodoUpdateForm(props) {
           {...getOverrideProps(overrides, "RightAlignCTASubFlex")}
         >
           <Button
-            children="Save"
+            children="Submit"
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || todo) ||
+              !(idProp || todoModelProp) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}

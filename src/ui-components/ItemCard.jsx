@@ -6,25 +6,10 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Todo } from "../models";
-import {
-  getOverrideProps,
-  useDataStoreDeleteAction,
-  useNavigateAction,
-} from "@aws-amplify/ui-react/internal";
-import { schema } from "../models/schema";
+import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Button, Flex, SwitchField, Text } from "@aws-amplify/ui-react";
 export default function ItemCard(props) {
-  const { todo, overrides, ...rest } = props;
-  const textContentOnClick = useNavigateAction({
-    type: "url",
-    url: `${"/update/"}${todo?.id}`,
-  });
-  const deleteButtonOnClick = useDataStoreDeleteAction({
-    id: todo?.id,
-    model: Todo,
-    schema: schema,
-  });
+  const { overrides, ...rest } = props;
   return (
     <Flex
       gap="16px"
@@ -54,6 +39,8 @@ export default function ItemCard(props) {
         {...getOverrideProps(overrides, "Content")}
       >
         <SwitchField
+          width="unset"
+          height="unset"
           shrink="0"
           label=""
           size="large"
@@ -74,9 +61,6 @@ export default function ItemCard(props) {
           basis="0"
           position="relative"
           padding="0px 0px 0px 0px"
-          onClick={() => {
-            textContentOnClick();
-          }}
           {...getOverrideProps(overrides, "TextContent")}
         >
           <Text
@@ -98,7 +82,7 @@ export default function ItemCard(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children={todo?.name}
+            children="Title"
             {...getOverrideProps(overrides, "Name")}
           ></Text>
           <Text
@@ -121,19 +105,18 @@ export default function ItemCard(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children={todo?.description}
+            children="Description text"
             {...getOverrideProps(overrides, "Description")}
           ></Text>
         </Flex>
         <Button
+          width="unset"
+          height="unset"
           shrink="0"
           size="default"
           isDisabled={false}
           variation="link"
           children="✕"
-          onClick={() => {
-            deleteButtonOnClick();
-          }}
           {...getOverrideProps(overrides, "DeleteButton")}
         ></Button>
       </Flex>

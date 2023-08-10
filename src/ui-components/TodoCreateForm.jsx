@@ -10,7 +10,7 @@ import {
   Button,
   Flex,
   Grid,
-  TextAreaField,
+  SwitchField,
   TextField,
 } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
@@ -31,29 +31,38 @@ export default function TodoCreateForm(props) {
   const initialValues = {
     name: "",
     description: "",
+    completed: false,
+    image: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [description, setDescription] = React.useState(
     initialValues.description
   );
+  const [completed, setCompleted] = React.useState(initialValues.completed);
+  const [image, setImage] = React.useState(initialValues.image);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.name);
     setDescription(initialValues.description);
+    setCompleted(initialValues.completed);
+    setImage(initialValues.image);
     setErrors({});
   };
   const validations = {
     name: [{ type: "Required" }],
     description: [],
+    completed: [],
+    image: [],
   };
   const runValidationTasks = async (
     fieldName,
     currentValue,
     getDisplayValue
   ) => {
-    const value = getDisplayValue
-      ? getDisplayValue(currentValue)
-      : currentValue;
+    const value =
+      currentValue && getDisplayValue
+        ? getDisplayValue(currentValue)
+        : currentValue;
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -73,6 +82,8 @@ export default function TodoCreateForm(props) {
         let modelFields = {
           name,
           description,
+          completed,
+          image,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -129,6 +140,8 @@ export default function TodoCreateForm(props) {
             const modelFields = {
               name: value,
               description,
+              completed,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -143,16 +156,19 @@ export default function TodoCreateForm(props) {
         hasError={errors.name?.hasError}
         {...getOverrideProps(overrides, "name")}
       ></TextField>
-      <TextAreaField
+      <TextField
         label="Description"
         isRequired={false}
         isReadOnly={false}
+        value={description}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
               name,
               description: value,
+              completed,
+              image,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -166,7 +182,61 @@ export default function TodoCreateForm(props) {
         errorMessage={errors.description?.errorMessage}
         hasError={errors.description?.hasError}
         {...getOverrideProps(overrides, "description")}
-      ></TextAreaField>
+      ></TextField>
+      <SwitchField
+        label="Completed"
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={completed}
+        onChange={(e) => {
+          let value = e.target.checked;
+          if (onChange) {
+            const modelFields = {
+              name,
+              description,
+              completed: value,
+              image,
+            };
+            const result = onChange(modelFields);
+            value = result?.completed ?? value;
+          }
+          if (errors.completed?.hasError) {
+            runValidationTasks("completed", value);
+          }
+          setCompleted(value);
+        }}
+        onBlur={() => runValidationTasks("completed", completed)}
+        errorMessage={errors.completed?.errorMessage}
+        hasError={errors.completed?.hasError}
+        {...getOverrideProps(overrides, "completed")}
+      ></SwitchField>
+      <TextField
+        label="Image"
+        isRequired={false}
+        isReadOnly={false}
+        value={image}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              description,
+              completed,
+              image: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.image ?? value;
+          }
+          if (errors.image?.hasError) {
+            runValidationTasks("image", value);
+          }
+          setImage(value);
+        }}
+        onBlur={() => runValidationTasks("image", image)}
+        errorMessage={errors.image?.errorMessage}
+        hasError={errors.image?.hasError}
+        {...getOverrideProps(overrides, "image")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
@@ -185,7 +255,7 @@ export default function TodoCreateForm(props) {
           {...getOverrideProps(overrides, "RightAlignCTASubFlex")}
         >
           <Button
-            children="Save"
+            children="Submit"
             type="submit"
             variation="primary"
             isDisabled={Object.values(errors).some((e) => e?.hasError)}

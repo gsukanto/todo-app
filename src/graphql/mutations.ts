@@ -11,11 +11,15 @@ export const createTodo = /* GraphQL */ `
       id
       name
       description
+      completed
+      image
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
+      __typename
     }
   }
 `;
@@ -28,11 +32,15 @@ export const updateTodo = /* GraphQL */ `
       id
       name
       description
+      completed
+      image
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
+      __typename
     }
   }
 `;
@@ -45,11 +53,15 @@ export const deleteTodo = /* GraphQL */ `
       id
       name
       description
+      completed
+      image
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
+      __typename
     }
   }
 `;

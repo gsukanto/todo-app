@@ -4,10 +4,12 @@ import { Authenticator, Flex } from "@aws-amplify/ui-react";
 import { Todo } from "@/models";
 import {
   EmptyListPlaceholder,
-  ItemCardCollection,
   PageContent,
   NavBar,
 } from "@/ui-components";
+import {
+  default as ItemCardCollection,
+} from "@/ui-components/ItemCardCollection";
 
 export default function Home() {
   return (

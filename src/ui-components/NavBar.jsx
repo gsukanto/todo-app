@@ -6,14 +6,10 @@
 
 /* eslint-disable */
 import * as React from "react";
-import {
-  getOverrideProps,
-  useNavigateAction,
-} from "@aws-amplify/ui-react/internal";
+import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Button, Flex, Heading } from "@aws-amplify/ui-react";
 export default function NavBar(props) {
-  const { todo, overrides, ...rest } = props;
-  const buttonOnClick = useNavigateAction({ type: "url", url: "/create" });
+  const { overrides, ...rest } = props;
   return (
     <Flex
       gap="20px"
@@ -44,20 +40,21 @@ export default function NavBar(props) {
         {...getOverrideProps(overrides, "Content")}
       >
         <Heading
+          width="unset"
+          height="unset"
           shrink="0"
           level="4"
           children="Todo App"
           {...getOverrideProps(overrides, "Heading")}
         ></Heading>
         <Button
+          width="unset"
+          height="unset"
           shrink="0"
           size="large"
           isDisabled={false}
           variation="primary"
           children="Add Item"
-          onClick={() => {
-            buttonOnClick();
-          }}
           {...getOverrideProps(overrides, "Button")}
         ></Button>
       </Flex>

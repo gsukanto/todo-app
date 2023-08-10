@@ -6,14 +6,10 @@
 
 /* eslint-disable */
 import * as React from "react";
-import {
-  getOverrideProps,
-  useNavigateAction,
-} from "@aws-amplify/ui-react/internal";
+import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Button, Flex, Heading, Text } from "@aws-amplify/ui-react";
 export default function EmptyListPlaceholder(props) {
   const { overrides, ...rest } = props;
-  const buttonOnClick = useNavigateAction({ type: "url", url: "/create" });
   return (
     <Flex
       gap="33px"
@@ -31,6 +27,8 @@ export default function EmptyListPlaceholder(props) {
       {...rest}
     >
       <Heading
+        width="unset"
+        height="unset"
         shrink="0"
         level="3"
         children="No Items"
@@ -59,14 +57,13 @@ export default function EmptyListPlaceholder(props) {
         {...getOverrideProps(overrides, "Description")}
       ></Text>
       <Button
+        width="unset"
+        height="unset"
         shrink="0"
         size="large"
         isDisabled={false}
         variation="link"
         children="Add Item"
-        onClick={() => {
-          buttonOnClick();
-        }}
         {...getOverrideProps(overrides, "Button")}
       ></Button>
     </Flex>

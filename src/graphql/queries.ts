@@ -8,11 +8,15 @@ export const getTodo = /* GraphQL */ `
       id
       name
       description
+      completed
+      image
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      owner
+      __typename
     }
   }
 `;
@@ -27,14 +31,19 @@ export const listTodos = /* GraphQL */ `
         id
         name
         description
+        completed
+        image
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        owner
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -55,14 +64,19 @@ export const syncTodos = /* GraphQL */ `
         id
         name
         description
+        completed
+        image
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        owner
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
